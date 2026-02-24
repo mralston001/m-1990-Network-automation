@@ -1,7 +1,23 @@
-- name: Run show version on Cisco device
- hosts: Lab-Switches
- tasks:
-   - name: Execute show version command
-     cisco.ios.ios_command:
-       commands:
-         - show version
+---
+- name: Get Cisco Switch Version
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+
+  vars:
+    ansible_network_os: cisco.ios.ios
+    ansible_user: "{{ username }}"
+    ansible_password: "{{ password }}"
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
+
+  tasks:
+    - name: Gather IOS facts
+      cisco.ios.ios_facts:
+        gather_subset:
+          - hardware
+          - default
+      register: switch_facts
+
+    - name: Display switch version
+      debug:
+        msg: "Switch {{ inventory_hostname }} is running version {{ switch_facts.ansible_facts.ansible_net_version }}"
