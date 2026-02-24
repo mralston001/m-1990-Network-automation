@@ -1,5 +1,5 @@
 - name: Run show version on Cisco device
- hosts: all
+ hosts: Inventory-Lab
  tasks:
    - name: Execute show version command
      cisco.ios.ios_command:
