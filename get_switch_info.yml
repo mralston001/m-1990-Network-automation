@@ -1,5 +1,5 @@
-name: Run show version on Cisco device
- hosts: 10.0.5.51
+- name: Run show version on Cisco device
+ hosts: all
  tasks:
    - name: Execute show version command
      cisco.ios.ios_command:
