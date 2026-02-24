@@ -1,0 +1,23 @@
+---
+- name: Gather and Display Switch Information
+  hosts: switches
+  gather_facts: no
+  connection: network_cli
+  tasks:
+    - name: Get Facts from Cisco IOS
+      cisco.ios.ios_facts:
+        gather_subset: all
+      register: switch_facts
+
+    - name: Display Switch Facts
+      debug:
+        var: switch_facts.ansible_facts.ansible_net_model
+
+    - name: Run specific show command
+      cisco.ios.ios_command:
+        commands: show inventory
+      register: inv_output
+
+    - name: Display Inventory Output
+      debug:
+        var: inv_output.stdout_lines
